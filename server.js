@@ -47,9 +47,9 @@ const urlSchema = new Schema({
 const URL = mongoose.model('URL', urlSchema);
 
 app.post('/api/shorturl/new', async(req, res) => {
-  const url = req.body.url_input;
+  const url = req.body.url;
   const shortUrl = shortId.generate();
-  if(!validUrl.isWebUrl(url)) {
+  if(!validUrl.isUri(url)) {
     return res.json({error: 'invalid URL'})
   } else {
     try {
@@ -73,7 +73,7 @@ app.post('/api/shorturl/new', async(req, res) => {
 
 app.get('/api/shorturl/:short_url?', async (req, res) => {
   try {
-    const redirectUrl = await URL.findOne({original_url: req.params.short_url});
+    const redirectUrl = await URL.findOne({short_url: req.params.short_url});
     if(redirectUrl) {
       return res.redirect(redirectUrl.original_url)
     } else {
