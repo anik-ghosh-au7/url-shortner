@@ -47,9 +47,10 @@ const urlSchema = new Schema({
 const URL = mongoose.model('URL', urlSchema);
 
 app.post('/api/shorturl/new', async(req, res) => {
-  const url = req.body.url_input;
+  const url = req.body.url;
   const shortUrl = shortId.generate();
-  if(!validUrl.isWebUrl(url)) {
+  console.log("from new ==> ", url, shortUrl);
+  if(!validUrl.isUri(url)) {
     return res.json({error: 'invalid URL'})
   } else {
     try {
